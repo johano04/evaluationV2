@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'db_s2_ETU004256';
+$dbname = 'db_s2_ETU004121';
 $user = 'root';
 $pass = ''; // adapte si besoin
 

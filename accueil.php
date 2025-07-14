@@ -68,7 +68,7 @@ function getImage($pdo, $id_objet) {
 <body>
     <header>
         <h1>Bienvenue, <?= $_SESSION['membre']['nom'] ?></h1>
-        <a href="logout.php">Déconnexion</a>
+        <a href="index.php">Déconnexion</a>
     </header>
 
     <div class="container">
@@ -114,8 +114,10 @@ function getImage($pdo, $id_objet) {
                         <a class="btn" href="fiche_objet.php?id=<?= $objet['id_objet'] ?>">Voir détails</a>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
+            <a href="ajouter_objet.php">Ajouter Objet</a>
     </div>
+    
 </body>
 </html>
