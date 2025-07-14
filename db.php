@@ -1,7 +1,7 @@
 <?php
-$host = 'localhost';
+$host = '172.60.0.11';
 $dbname = 'db_s2_ETU004121';
-$user = '172.60.0.11';
+$user = 'ETU004121';
 $pass = 'qKB9KBNc';
 
 try {
