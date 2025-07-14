@@ -2,21 +2,22 @@
 session_start();
 require_once 'db.php';
 
-// Vérifie si l'utilisateur est connecté
+
 if (!isset($_SESSION['membre'])) {
     header("Location: login.php");
     exit;
 }
 
-// Récupérer les catégories
+
+
 $categories = $pdo->query("SELECT * FROM categorie_objet")->fetchAll();
 
-// Filtres
+
 $filtre_cat = isset($_GET['categorie']) ? $_GET['categorie'] : '';
 $filtre_nom = isset($_GET['nom']) ? trim($_GET['nom']) : '';
 $filtre_dispo = isset($_GET['disponible']) ? true : false;
 
-// Requête de base
+
 $sql = "SELECT o.*, c.nom_categorie, m.nom AS proprio,
            (SELECT date_retour FROM emprunt WHERE id_objet = o.id_objet ORDER BY date_emprunt DESC LIMIT 1) AS date_retour
         FROM objet o
@@ -26,7 +27,7 @@ $sql = "SELECT o.*, c.nom_categorie, m.nom AS proprio,
 
 $params = [];
 
-// Ajout des filtres
+
 if ($filtre_cat) {
     $sql .= " AND o.id_categorie = ? ";
     $params[] = $filtre_cat;
@@ -49,7 +50,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $objets = $stmt->fetchAll();
 
-// Fonction image principale
+
 function getImage($pdo, $id_objet) {
     $img = $pdo->prepare("SELECT nom_image FROM images_objet WHERE id_objet = ? ORDER BY id_image ASC LIMIT 1");
     $img->execute([$id_objet]);
@@ -68,6 +69,7 @@ function getImage($pdo, $id_objet) {
 <body>
     <header>
         <h1>Bienvenue, <?= htmlspecialchars($_SESSION['membre']['nom']) ?></h1>
+        <a href="mes_emprunts.php">Les objects emprunter</a>
         <a href="index.php">Déconnexion</a>
     </header>
 
@@ -108,7 +110,7 @@ function getImage($pdo, $id_objet) {
                         <p>Propriétaire : <?= htmlspecialchars($objet['proprio']) ?></p>
 
                         <?php
-                        // Vérifie si l'objet est déjà emprunté
+                        
                         $checkEmprunt = $pdo->prepare("SELECT * FROM emprunt WHERE id_objet = ? AND date_retour >= CURDATE()");
                         $checkEmprunt->execute([$objet['id_objet']]);
                         $disponible = ($checkEmprunt->rowCount() == 0);
@@ -136,7 +138,7 @@ function getImage($pdo, $id_objet) {
             <?php endforeach; ?>
         </div>
 
-        <a class="btn-add" href="ajouter_objet.php">➕ Ajouter un objet</a>
+<a class="btn-add" href="ajouter_objet.php">➕ Ajouter un objet</a>
     </div>
 </body>
 </html>

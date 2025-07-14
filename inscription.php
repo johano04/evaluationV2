@@ -25,24 +25,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Inscription</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow w-96">
-        <h2 class="text-2xl font-bold mb-4 text-center">Créer un compte</h2>
-        <input name="nom" type="text" placeholder="Nom" class="w-full border px-3 py-2 mb-3 rounded" required>
-        <input name="email" type="email" placeholder="Email" class="w-full border px-3 py-2 mb-3 rounded" required>
-        <input name="mdp" type="password" placeholder="Mot de passe" class="w-full border px-3 py-2 mb-3 rounded" required>
-        <input name="ville" type="text" placeholder="Ville" class="w-full border px-3 py-2 mb-3 rounded">
-        <input name="naissance" type="date" class="w-full border px-3 py-2 mb-3 rounded" required>
-        <select name="genre" class="w-full border px-3 py-2 mb-3 rounded">
+<body>
+
+    <h2>Créer un compte</h2>
+
+    <form method="post" enctype="multipart/form-data">
+Nom :<input name="nom" type="text" required><br><br>
+Email :<input name="email" type="email" required><br><br>
+Mot de passe :<input name="mdp" type="password" required><br><br>
+Ville :<input name="ville" type="text"><br><br>
+Date de naissance :<input name="naissance" type="date" required><br><br>
+Genre :<select name="genre">
             <option value="H">Homme</option>
             <option value="F">Femme</option>
-        </select>
-        <input type="file" name="image_profil" class="w-full border px-3 py-2 mb-3 rounded">
-        <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">S'inscrire</button>
-        <p class="text-sm text-center mt-4">Déjà inscrit ? <a href="login.php" class="text-blue-600 underline">Se connecter</a></p>
+        </select><br><br>
+
+        <label>Image de profil :</label><br>
+        <input type="file" name="image_profil"><br><br>
+
+        <button type="submit">S'inscrire</button>
     </form>
+
+    <p>Déjà inscrit ? <a href="index.php">Se connecter</a></p>
+
 </body>
 </html>
