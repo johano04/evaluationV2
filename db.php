@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $dbname = 'db_s2_ETU004121';
-$user = 'root';
-$pass = ''; // adapte si besoin
+$user = '172.60.0.11';
+$pass = 'qKB9KBNc';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
