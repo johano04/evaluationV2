@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->prepare("INSERT INTO membre (nom, date_naissance, genre, email, ville, mdp, image_profil) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$nom, $naissance, $genre, $email, $ville, $mdp, $img]);
-    header('Location: login.php');
+    header('Location: index.php');
     exit;
 }
 ?>

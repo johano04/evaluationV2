@@ -63,11 +63,11 @@ function getImage($pdo, $id_objet) {
 <head>
     <meta charset="UTF-8">
     <title>Liste des objets</title>
-    <link rel="stylesheet" href="style.css"> <!-- tu ajouteras plus tard -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Bienvenue, <?= $_SESSION['membre']['nom'] ?></h1>
+        <h1>Bienvenue, <?= htmlspecialchars($_SESSION['membre']['nom']) ?></h1>
         <a href="index.php">Déconnexion</a>
     </header>
 
@@ -101,23 +101,42 @@ function getImage($pdo, $id_objet) {
         <div class="objet-liste">
             <?php foreach ($objets as $objet): ?>
                 <div class="card">
-                    <img src="<?= getImage($pdo, $objet['id_objet']) ?>" alt="Image">
+                    <img src="<?= getImage($pdo, $objet['id_objet']) ?>" alt="Image" width="200">
                     <div class="card-content">
                         <h3><?= htmlspecialchars($objet['nom_objet']) ?></h3>
                         <p>Catégorie : <?= htmlspecialchars($objet['nom_categorie']) ?></p>
                         <p>Propriétaire : <?= htmlspecialchars($objet['proprio']) ?></p>
-                        <?php if ($objet['date_retour'] === null): ?>
-                            <p style="color:red;">Actuellement emprunté</p>
+
+                        <?php
+                        // Vérifie si l'objet est déjà emprunté
+                        $checkEmprunt = $pdo->prepare("SELECT * FROM emprunt WHERE id_objet = ? AND date_retour >= CURDATE()");
+                        $checkEmprunt->execute([$objet['id_objet']]);
+                        $disponible = ($checkEmprunt->rowCount() == 0);
+                        ?>
+
+                        <?php if ($disponible): ?>
+                            <p style="color:green;">Disponible</p>
+                            <?php if ($_SESSION['membre']['id_membre'] != $objet['id_membre']): ?>
+                                <form method="POST" action="emprunter.php" style="margin-top: 10px;">
+                                    <input type="hidden" name="id_objet" value="<?= $objet['id_objet'] ?>">
+                                    <label for="duree_<?= $objet['id_objet'] ?>">Durée (jours) :</label>
+                                    <input type="number" name="duree" min="1" max="30" required>
+                                    <button type="submit">Emprunter</button>
+                                </form>
+                            <?php else: ?>
+                                <p style="color:gray;">(C'est votre objet)</p>
+                            <?php endif; ?>
                         <?php else: ?>
-                            <p>Disponible</p>
+                            <p style="color:red;">Actuellement emprunté</p>
                         <?php endif; ?>
+
                         <a class="btn" href="fiche_objet.php?id=<?= $objet['id_objet'] ?>">Voir détails</a>
                     </div>
                 </div>
-                <?php endforeach; ?>
-            </div>
-            <a href="ajouter_objet.php">Ajouter Objet</a>
+            <?php endforeach; ?>
+        </div>
+
+        <a class="btn-add" href="ajouter_objet.php">➕ Ajouter un objet</a>
     </div>
-    
 </body>
 </html>
